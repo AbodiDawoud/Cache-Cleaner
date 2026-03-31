@@ -17,6 +17,18 @@
 		BDE63D0B2EC28E0A006846C6 /* CacheController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE63D0A2EC28E0A006846C6 /* CacheController.swift */; };
 		BDE63D0D2EC28EB4006846C6 /* CacheSweep.plist in Resources */ = {isa = PBXBuildFile; fileRef = BDE63D0C2EC28EB4006846C6 /* CacheSweep.plist */; };
 		BDE63D0F2EC29A75006846C6 /* TooltipModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE63D0E2EC29A75006846C6 /* TooltipModifier.swift */; };
+		BDEA14122F7B590D00E64769 /* DragDropDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEA14112F7B590D00E64769 /* DragDropDelegate.swift */; };
+		BDEA14142F7B595A00E64769 /* DropOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEA14132F7B595A00E64769 /* DropOverlayView.swift */; };
+		BDEA14162F7B59B400E64769 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEA14152F7B59B400E64769 /* ToastView.swift */; };
+		BDEA141B2F7B666600E64769 /* 01_click.wav in Resources */ = {isa = PBXBuildFile; fileRef = BDEA14182F7B666600E64769 /* 01_click.wav */; };
+		BDEA141C2F7B666600E64769 /* 03_success.wav in Resources */ = {isa = PBXBuildFile; fileRef = BDEA141A2F7B666600E64769 /* 03_success.wav */; };
+		BDEA141D2F7B666600E64769 /* 02_tick.wav in Resources */ = {isa = PBXBuildFile; fileRef = BDEA14192F7B666600E64769 /* 02_tick.wav */; };
+		BDEA141F2F7B6BFB00E64769 /* 04_failure.wav in Resources */ = {isa = PBXBuildFile; fileRef = BDEA141E2F7B6BFB00E64769 /* 04_failure.wav */; };
+		BDEA14212F7B6C5700E64769 /* 05_startup.wav in Resources */ = {isa = PBXBuildFile; fileRef = BDEA14202F7B6C5700E64769 /* 05_startup.wav */; };
+		BDFE780A2FEAFB1400BBD15A /* ApplicationVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFE78092FEAFB1400BBD15A /* ApplicationVM.swift */; };
+		BDFE780C2FEB063A00BBD15A /* CacheLocationCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFE780B2FEB063A00BBD15A /* CacheLocationCatalog.swift */; };
+		BDFE780E2FEB064100BBD15A /* CacheLocationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFE780D2FEB064100BBD15A /* CacheLocationStore.swift */; };
+		BDFE78102FEB0FC900BBD15A /* SoundEffectPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFE780F2FEB0FC900BBD15A /* SoundEffectPlayer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +44,18 @@
 		BDE63D0A2EC28E0A006846C6 /* CacheController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheController.swift; sourceTree = "<group>"; };
 		BDE63D0C2EC28EB4006846C6 /* CacheSweep.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = CacheSweep.plist; sourceTree = "<group>"; };
 		BDE63D0E2EC29A75006846C6 /* TooltipModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipModifier.swift; sourceTree = "<group>"; };
+		BDEA14112F7B590D00E64769 /* DragDropDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragDropDelegate.swift; sourceTree = "<group>"; };
+		BDEA14132F7B595A00E64769 /* DropOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropOverlayView.swift; sourceTree = "<group>"; };
+		BDEA14152F7B59B400E64769 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		BDEA14182F7B666600E64769 /* 01_click.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 01_click.wav; sourceTree = "<group>"; };
+		BDEA14192F7B666600E64769 /* 02_tick.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 02_tick.wav; sourceTree = "<group>"; };
+		BDEA141A2F7B666600E64769 /* 03_success.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 03_success.wav; sourceTree = "<group>"; };
+		BDEA141E2F7B6BFB00E64769 /* 04_failure.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 04_failure.wav; sourceTree = "<group>"; };
+		BDEA14202F7B6C5700E64769 /* 05_startup.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 05_startup.wav; sourceTree = "<group>"; };
+		BDFE78092FEAFB1400BBD15A /* ApplicationVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationVM.swift; sourceTree = "<group>"; };
+		BDFE780B2FEB063A00BBD15A /* CacheLocationCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheLocationCatalog.swift; sourceTree = "<group>"; };
+		BDFE780D2FEB064100BBD15A /* CacheLocationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheLocationStore.swift; sourceTree = "<group>"; };
+		BDFE780F2FEB0FC900BBD15A /* SoundEffectPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundEffectPlayer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,8 +89,9 @@
 			isa = PBXGroup;
 			children = (
 				BDE63D022EC25868006846C6 /* Resources */,
-				BDE63D052EC25CF2006846C6 /* Components */,
-				BDE63D0A2EC28E0A006846C6 /* CacheController.swift */,
+				BDEA140D2F7B585E00E64769 /* Models */,
+				BDEA14102F7B590100E64769 /* Classes */,
+				BDE63D052EC25CF2006846C6 /* Content */,
 				BDE63CF72EC25848006846C6 /* ContentView.swift */,
 				BDE63CF52EC25848006846C6 /* App.swift */,
 			);
@@ -79,20 +104,55 @@
 				BDE63CF92EC25849006846C6 /* Assets.xcassets */,
 				BDE63CFB2EC25849006846C6 /* CacheSweep.entitlements */,
 				BDE63D0C2EC28EB4006846C6 /* CacheSweep.plist */,
-				BDE63D032EC2593B006846C6 /* Models.swift */,
+				BDEA14172F7B663D00E64769 /* SoundEffects */,
 				BD9802F62EC3FAA50058FA9B /* Extensions.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		BDE63D052EC25CF2006846C6 /* Components */ = {
+		BDE63D052EC25CF2006846C6 /* Content */ = {
 			isa = PBXGroup;
 			children = (
 				BDE63D062EC25CFE006846C6 /* StatCard.swift */,
 				BDE63D082EC25D2D006846C6 /* CacheRow.swift */,
 				BDE63D0E2EC29A75006846C6 /* TooltipModifier.swift */,
+				BDEA14132F7B595A00E64769 /* DropOverlayView.swift */,
+				BDEA14152F7B59B400E64769 /* ToastView.swift */,
 			);
-			path = Components;
+			path = Content;
+			sourceTree = "<group>";
+		};
+		BDEA140D2F7B585E00E64769 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BDE63D032EC2593B006846C6 /* Models.swift */,
+				BDFE780B2FEB063A00BBD15A /* CacheLocationCatalog.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		BDEA14102F7B590100E64769 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				BDFE78092FEAFB1400BBD15A /* ApplicationVM.swift */,
+				BDE63D0A2EC28E0A006846C6 /* CacheController.swift */,
+				BDFE780D2FEB064100BBD15A /* CacheLocationStore.swift */,
+				BDFE780F2FEB0FC900BBD15A /* SoundEffectPlayer.swift */,
+				BDEA14112F7B590D00E64769 /* DragDropDelegate.swift */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		BDEA14172F7B663D00E64769 /* SoundEffects */ = {
+			isa = PBXGroup;
+			children = (
+				BDEA14182F7B666600E64769 /* 01_click.wav */,
+				BDEA14192F7B666600E64769 /* 02_tick.wav */,
+				BDEA141A2F7B666600E64769 /* 03_success.wav */,
+				BDEA141E2F7B6BFB00E64769 /* 04_failure.wav */,
+				BDEA14202F7B6C5700E64769 /* 05_startup.wav */,
+			);
+			path = SoundEffects;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -156,8 +216,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDEA141B2F7B666600E64769 /* 01_click.wav in Resources */,
+				BDEA141C2F7B666600E64769 /* 03_success.wav in Resources */,
+				BDEA141D2F7B666600E64769 /* 02_tick.wav in Resources */,
+				BDEA14212F7B6C5700E64769 /* 05_startup.wav in Resources */,
 				BDE63D0D2EC28EB4006846C6 /* CacheSweep.plist in Resources */,
 				BDE63CFA2EC25849006846C6 /* Assets.xcassets in Resources */,
+				BDEA141F2F7B6BFB00E64769 /* 04_failure.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -170,12 +235,19 @@
 			files = (
 				BDE63D042EC2593B006846C6 /* Models.swift in Sources */,
 				BDE63D0B2EC28E0A006846C6 /* CacheController.swift in Sources */,
+				BDFE780A2FEAFB1400BBD15A /* ApplicationVM.swift in Sources */,
+				BDFE780E2FEB064100BBD15A /* CacheLocationStore.swift in Sources */,
+				BDFE78102FEB0FC900BBD15A /* SoundEffectPlayer.swift in Sources */,
 				BDE63D0F2EC29A75006846C6 /* TooltipModifier.swift in Sources */,
+				BDEA14122F7B590D00E64769 /* DragDropDelegate.swift in Sources */,
+				BDEA14162F7B59B400E64769 /* ToastView.swift in Sources */,
 				BD9802F72EC3FAA50058FA9B /* Extensions.swift in Sources */,
+				BDEA14142F7B595A00E64769 /* DropOverlayView.swift in Sources */,
 				BDE63CF82EC25848006846C6 /* ContentView.swift in Sources */,
 				BDE63D072EC25CFE006846C6 /* StatCard.swift in Sources */,
 				BDE63D092EC25D2D006846C6 /* CacheRow.swift in Sources */,
 				BDE63CF62EC25848006846C6 /* App.swift in Sources */,
+				BDFE780C2FEB063A00BBD15A /* CacheLocationCatalog.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

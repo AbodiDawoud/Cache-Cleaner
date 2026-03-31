@@ -9,7 +9,7 @@ struct StatCardView: View {
     let title: String
     let value: String
     let icon: String
-    let gradient: [Color]
+    let color: Color
     
     @Environment(\.colorScheme) private var colorScheme
     
@@ -17,9 +17,7 @@ struct StatCardView: View {
         VStack(alignment: .leading, spacing: 12) {
             Image(icon)
                 .font(.system(size: 27))
-                .foregroundStyle(
-                    LinearGradient(colors: gradient, startPoint: .topLeading, endPoint: .bottomTrailing)
-                )
+                .foregroundStyle(color.gradient)
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(value)
@@ -76,19 +74,5 @@ struct ProgressiveBlurView: View {
                 .frame(height: 1)
             }
         }
-    }
-}
-
-#Preview {
-    ZStack {
-        Color.semiBlack.ignoresSafeArea()
-        
-        StatCardView(
-            title: "Total Cache",
-            value: "0 KB",
-            icon: "hard-drive",
-            gradient: [Color(red: 0.95, green: 0.45, blue: 0.30), Color(red: 0.85, green: 0.35, blue: 0.50)]
-        )
-        .padding(30)
     }
 }

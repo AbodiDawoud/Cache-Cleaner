@@ -11,7 +11,6 @@ import Foundation
 final class CacheController {
     static let shared = CacheController()
     
-    
     private let fileManager = FileManager.default
     private let byteFormatter: ByteCountFormatter
     
@@ -22,10 +21,8 @@ final class CacheController {
         formatter.countStyle = .file
         self.byteFormatter = formatter
     }
-}
 
-
-extension CacheController {
+    
 
     /// Calculates the total directory size using the system `du` command for performance.
     /// Falls back to manual enumeration if the command fails.
@@ -33,7 +30,7 @@ extension CacheController {
         do {
             return try await calculateSizeWithCommand(at: path)
         } catch {
-            return try await calculateSizeManually(at: path)
+            return try calculateSizeManually(at: path)
         }
     }
     
@@ -176,7 +173,7 @@ private extension CacheController {
     
     
     // Fallback: manually enumerate all files and sum their sizes.
-    func calculateSizeManually(at path: String) async throws -> Int64 {
+    func calculateSizeManually(at path: String) throws -> Int64 {
         guard fileManager.fileExists(atPath: path) else { return 0 }
         
         var totalSize: Int64 = 0

@@ -14,7 +14,7 @@ extension NSColor {
 
 extension Color {
     static var almostClear: Color {
-        Color.white.opacity(0.0001)
+        Color.white.opacity(0.001)
     }
 }
 

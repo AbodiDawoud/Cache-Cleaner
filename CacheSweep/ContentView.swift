@@ -1,69 +1,62 @@
 //
 //  ContentView.swift
 //  CacheSweep
-    
+//
 
 import SwiftUI
+import UniformTypeIdentifiers
+
 
 struct ContentView: View {
-    @State private var cacheLocations: [CacheLocation] = CacheLocation.knownLocations
-    
-    @State private var isScanning = false
-    @State private var isCleaning = false
-    
-    @State private var showToast = false
-    @State private var toastMessage = ""
-    
-    
-    @SceneStorage("freed_space") private var freedSpace: Int = 0
-    @Environment(\.colorScheme) var colorScheme
-    
-    var totalSize: Int64 {
-        cacheLocations.reduce(0) { $0 + $1.size }
-    }
+    @Environment(ApplicationVM.self) private var model
+    @Environment(\.colorScheme) private var colorScheme
+    @Namespace private var filterSelectionAnimation
 
-    
     var body: some View {
+        @Bindable var model = model
+
         ZStack(alignment: .bottom) {
             Color.semiBlack.ignoresSafeArea()
-            
-            
-            // Main Content
+
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 24) {
                     statsSection
-                    
-                    
                     listSection
                 }
                 .padding(.horizontal, 30)
                 .padding(.top, 70)
-                .padding(.bottom, 90)
+                .padding(.bottom, 98)
             }
-            
+
             VStack {
                 customTitleBar
                 Spacer()
             }
-            
-            actionButtons
-            
-            
-            if showToast {
-                toastView
+
+            bottomActionButtons
+
+            if model.showToast {
+                ToastView(message: model.toastMessage)
+                    .animation(.spring(response: 0.5, dampingFraction: 0.7), value: model.showToast)
             }
         }
-        .task {
-            scanCaches()
+        .blur(radius: model.isReceivingDrop ? 50 : 0)
+        .onDrop(of: [UTType.fileURL.identifier], isTargeted: $model.isReceivingDrop, perform: model.handleDroppedFolders)
+        .overlay {
+            if model.isReceivingDrop {
+                DropOverlayView()
+            }
         }
     }
 
-    
-    
     var customTitleBar: some View {
         HStack {
+            Image(nsImage: .init(named: NSImage.applicationIconName)!)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 35, height: 35)
             Text("Cache Sweep")
-                .font(.system(size: 20, weight: .heavy, design: .rounded))
+                .font(.system(size: 20, weight: .bold, design: .rounded))
 
             Spacer()
         }
@@ -88,48 +81,54 @@ struct ContentView: View {
                 }
         )
     }
-    
-    
+
     var statsSection: some View {
         HStack(spacing: 16) {
             StatCardView(
                 title: "Total Cache",
-                value: CacheController.shared.byteString(totalSize),
+                value: model.byteString(model.totalSize),
                 icon: "database",
-                gradient: [Color(#colorLiteral(red: 0.1895005107, green: 0.3210249543, blue: 0.5000762939, alpha: 1)), Color(#colorLiteral(red: 0.4777941108, green: 0.5027701259, blue: 0.7055597901, alpha: 1))]
+                color: .indigo
             )
-            
+
             StatCardView(
                 title: "Total Cleaned",
-                value: CacheController.shared.byteString(Int64(freedSpace)),
+                value: model.byteString(Int64(model.freedSpace)),
                 icon: "circle-check-big",
-                gradient: [Color(#colorLiteral(red: 0.6004895568, green: 0.6718734503, blue: 0.6247107983, alpha: 1)), Color(#colorLiteral(red: 0.465059936, green: 0.5566559434, blue: 0.4440754354, alpha: 1))]
+                color: .seaFoam
             )
-            
+
             StatCardView(
                 title: "Locations",
-                value: "\(cacheLocations.count)",
+                value: "\(model.cacheLocations.count)",
                 icon: "folder-tree",
-                gradient: [Color(#colorLiteral(red: 0.6049374938, green: 0.4113099873, blue: 0.2904190123, alpha: 1)), Color(#colorLiteral(red: 0.6989366412, green: 0.5722115636, blue: 0.4788595438, alpha: 1))]
+                color: .teal
             )
         }
     }
-    
-    
+
     var listSection: some View {
         VStack(spacing: 11) {
+            Text("Known Locations")
+                .font(.system(size: 14.5, weight: .semibold))
+                .foregroundStyle(.gray)
+                .padding(.bottom, 3)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
             HStack {
-                Text("Known Locations")
-                    .font(.system(size: 14.5, weight: .semibold))
-                    .foregroundStyle(.gray)
-                
+                filterBar
                 Spacer()
+                addPathButton
+                sortMenu
             }
-            .padding(.bottom, 3)
-            
+
             VStack(spacing: 10) {
-                ForEach(cacheLocations) { location in
+                ForEach(model.filteredCacheLocations) { location in
                     CacheRowView(location: location)
+                        .onDrop(
+                            of: [UTType.plainText.identifier],
+                            delegate: DragDropDelegate(target: location, model: model)
+                        )
                         .transition(.asymmetric(
                             insertion: .scale.combined(with: .opacity),
                             removal: .scale.combined(with: .opacity)
@@ -138,19 +137,114 @@ struct ContentView: View {
             }
         }
     }
-    
-    
-    var actionButtons: some View {
+
+    var addPathButton: some View {
+        Button(action: model.promptForCustomPath) {
+            HStack(spacing: 8) {
+                Image(systemName: "plus")
+                    .font(.system(size: 11, weight: .bold))
+                Text("Add Path")
+                    .font(.system(size: 13, weight: .semibold))
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .background(
+                Capsule(style: .continuous)
+                    .fill(colorScheme == .dark ? Color.white.opacity(0.06) : Color.black.opacity(0.05))
+            )
+            .overlay {
+                Capsule(style: .continuous)
+                    .stroke(colorScheme == .dark ? Color.white.opacity(0.12) : Color.black.opacity(0.10), lineWidth: 1)
+            }
+        }
+        .buttonStyle(.plain)
+        .pointingHandCursor()
+        .help("Add a custom folder to scan and clean")
+    }
+
+    var filterBar: some View {
+        HStack(spacing: 10) {
+            ForEach(CacheFilter.allCases) { filter in
+                Button {
+                    withAnimation(.snappy) {
+                        SoundEffectPlayer.shared.play(.click, volume: 0.55)
+                        model.selectedFilter = filter
+                    }
+                } label: {
+                    Text(filter.rawValue)
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(model.selectedFilter == filter ? colorScheme == .dark ? .black : .white : .primary)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 8)
+                        .background(
+                            ZStack {
+                                Capsule(style: .continuous)
+                                    .stroke(colorScheme == .dark ? Color.white.opacity(0.12) : Color.black.opacity(0.10), lineWidth: 1)
+                                    .fill(colorScheme == .dark ? Color.white.opacity(0.06) : Color.black.opacity(0.05))
+
+                                if model.selectedFilter == filter {
+                                    Capsule(style: .continuous)
+                                        .fill(colorScheme == .dark ? .white : Color(red: 0.12, green: 0.12, blue: 0.14))
+                                        .matchedGeometryEffect(id: "selectedFilterCapsule", in: filterSelectionAnimation)
+                                }
+                            }
+                        )
+                }
+                .buttonStyle(.plain)
+                .pointingHandCursor()
+            }
+        }
+        .padding(.vertical, 2)
+    }
+
+    var sortMenu: some View {
+        @Bindable var model = model
+
+        return Menu {
+            Picker("Sort By", selection: $model.selectedSort.animation()) {
+                ForEach(CacheSort.allCases) { sort in
+                    Text(sort.rawValue).tag(sort)
+                }
+            }
+            .pickerStyle(.inline)
+        } label: {
+            HStack(spacing: 8) {
+                Text("Sort by")
+                    .font(.system(size: 13, weight: .semibold))
+                Text(model.selectedSort.rawValue)
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundStyle(.secondary)
+                Image(systemName: "arrow.up.arrow.down")
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundStyle(.secondary)
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .background(
+                Capsule(style: .continuous)
+                    .fill(colorScheme == .dark ? Color.white.opacity(0.06) : Color.black.opacity(0.05))
+            )
+            .overlay {
+                Capsule(style: .continuous)
+                    .stroke(colorScheme == .dark ? Color.white.opacity(0.12) : Color.black.opacity(0.10), lineWidth: 1)
+            }
+        }
+        .buttonStyle(.plain)
+        .fixedSize()
+        .pointingHandCursor()
+    }
+
+    var bottomActionButtons: some View {
         HStack(spacing: 12) {
-            Button(action: scanCaches) {
+            Button(action: model.scanCaches) {
                 HStack {
-                    if isScanning {
+                    if model.isScanning {
                         ProgressView().controlSize(.small)
                     } else {
                         Image(systemName: "arrow.clockwise")
                     }
-                    
-                    Text(isScanning ? "Scanning..." : "Scan")
+
+                    Text(model.isScanning ? "Scanning..." : "Scan")
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)
@@ -160,17 +254,15 @@ struct ContentView: View {
                     Capsule().stroke(.quaternary, lineWidth: 1)
                 }
             }
-            .disabled(isScanning || isCleaning)
-            
-            Button(action: performClean) {
+            .disabled(model.isScanning || model.isCleaning)
+
+            Button(action: model.performClean) {
                 HStack {
-                    if isCleaning {
+                    if model.isCleaning {
                         ProgressView().controlSize(.small)
-                    } else {
-                        Image(systemName: "sparkles")
                     }
-                    
-                    Text(isCleaning ? "Cleaning..." : "Clean All")
+
+                    Text(model.isCleaning ? "Cleaning..." : "Clean All")
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)
@@ -192,95 +284,13 @@ struct ContentView: View {
                             .init(color: .black.opacity(0.4), location: 0.4),
                             .init(color: .black.opacity(0.92), location: 0.6),
                             .init(color: .black.opacity(0.96), location: 0.8),
-                            .init(color: .black.opacity(1.0), location: 1.0),
+                            .init(color: .black.opacity(1.0), location: 1.0)
                         ]),
                         startPoint: .top,
                         endPoint: .bottom
                     )
                 }
                 .frame(height: 150)
-        }
-    }
-    
-    
-    var toastView: some View {
-        HStack(spacing: 12) {
-            Image(systemName: "checkmark.circle.fill")
-                .font(.system(size: 20))
-                .foregroundColor(Color(red: 0.35, green: 0.85, blue: 0.55))
-            
-            Text(toastMessage)
-                .font(.system(size: 14, weight: .medium))
-                .foregroundColor(colorScheme == .dark ? .white : Color(red: 0.15, green: 0.12, blue: 0.18))
-        }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 14)
-        .background(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(.ultraThickMaterial)
-                .shadow(color: .black.opacity(0.2), radius: 20, y: 10)
-        )
-        .padding(.bottom, 50)
-        .transition(.move(edge: .bottom).combined(with: .opacity))
-        .animation(.spring(response: 0.5, dampingFraction: 0.7), value: showToast)
-    }
-
-    
-    func scanCaches() {
-        isScanning = true
-        
-        Task.detached(priority: .userInitiated) {
-            let paths = await cacheLocations.map { $0.path }
-            let results = await CacheController.shared.scanPaths(paths)
-            
-            await MainActor.run {
-                for index in cacheLocations.indices {
-                    let path = cacheLocations[index].path
-                    cacheLocations[index].size = results[path] ?? 0
-                }
-                
-                isScanning = false
-                
-                toastMessage = "Scan complete! Found " + CacheController.shared.byteString(totalSize)
-                withAnimation { showToast = true }
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                    withAnimation {
-                        showToast = false
-                    }
-                }
-            }
-        }
-    }
-
-    
-    func performClean() {
-        self.isCleaning = true
-        let toastDuration: Double = 3
-        
-        Task.detached(priority: .background) {
-            let availablePaths = await cacheLocations.map { $0.path }
-            let (totalFreed, errors) = await CacheController.shared.cleanPaths(availablePaths)
-            
-            if errors.isEmpty == false {
-                errors.values.forEach { print($0) }
-            } else {
-                print("Successfully cleaned caches! \(totalFreed) bytes freed")
-            }
-            
-            await MainActor.run {
-                self.isCleaning = false
-                self.toastMessage = "Cleaned " + CacheController.shared.byteString(totalFreed) + "!"
-                
-                withAnimation {
-                    self.showToast = true
-                    self.freedSpace += Int(totalFreed)
-                }
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + toastDuration) {
-                    withAnimation { showToast = false }
-                }
-            }
         }
     }
 }
