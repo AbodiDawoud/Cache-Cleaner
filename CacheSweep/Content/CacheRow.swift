@@ -15,10 +15,9 @@ struct CacheRowView: View {
     
     var body: some View {
         HStack(spacing: 13) {
-            Image(systemName: "square.grid.4x3.fill")
-                .font(.system(size: 14, weight: .semibold))
+            Image(.gripHorizontal)
+                .font(.system(size: 20, weight: .semibold))
                 .foregroundStyle(.secondary)
-                .frame(width: 18)
                 .help("Drag to reorder")
                 .onHover {
                     $0 ? NSCursor.openHand.push() : NSCursor.pop()
@@ -28,8 +27,7 @@ struct CacheRowView: View {
                     model.draggedLocation = location
                     return NSItemProvider(object: location.path as NSString)
                 } preview: {
-                    Color.clear
-                        .frame(width: 1, height: 1)
+                    Color.clear.frame(width: 1, height: 1)
                 }
                 
 
