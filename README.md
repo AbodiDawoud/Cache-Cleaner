@@ -11,7 +11,7 @@
 </div>
 
 # Cache Sweep
-A simple cleaner app lists known cache dictionaries and helps you clear them. Before you make a clean request, it’s a good idea to check out any dictionary you’re thinking of cleaning up.
+A native macOS cache cleaner app, it helps you search, track and clear cache directories. I would suggest that you actually read and knowing what you are cleaning before doing that. The provided locations isn't critical, but out of safety.
 
 
 <img width="1007" height="849" alt="Screenshot 2026-03-31 at 11 50 45 AM" src="https://github.com/user-attachments/assets/4520903d-1bd2-43ac-bdda-250c06e49ef6" />
