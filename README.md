@@ -14,4 +14,4 @@
 A native macOS cache cleaner app, it helps you search, track and clear cache directories. I would suggest that you actually read and knowing what you are cleaning before doing that. The provided locations isn't critical, but out of safety.
 
 
-<img width="1007" height="849" alt="Screenshot 2026-03-31 at 11 50 45 AM" src="https://github.com/user-attachments/assets/4520903d-1bd2-43ac-bdda-250c06e49ef6" />
+<img width="1007" height="889" alt="Screenshot 2026-03-31 at 12 16 30 PM" src="https://github.com/user-attachments/assets/dbb8e052-5349-4af8-b032-2b9f8fd11fb1" />
