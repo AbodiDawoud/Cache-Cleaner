@@ -38,6 +38,20 @@ enum CacheLocationCatalog {
             isCustom: false
         ),
         CacheLocation(
+            path: "\(homeDirectory)/Library/Logs/",
+            name: "Logs",
+            description: "General logs directory for apps and agents",
+            isCritical: false,
+            isCustom: false
+        ),
+        CacheLocation(
+            path: "/Library/Logs/",
+            name: "Logs",
+            description: "System logs directory",
+            isCritical: false,
+            isCustom: false
+        ),
+        CacheLocation(
             path: "\(homeDirectory)/Library/Caches",
             name: "User Caches",
             description: "General cache directory for apps and agents in the current user account.",
