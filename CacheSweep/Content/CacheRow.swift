@@ -85,10 +85,9 @@ struct CacheRowView: View {
                 divider
                 
                 Button(action: copyPath) {
-                    Image(.copy)
+                    Image(haveCopied ? .check : .copy)
                         .foregroundStyle(.primary)
                         .background(Color.almostClear)
-                        .symbolEffect(.bounce, options: .nonRepeating, value: haveCopied == true)
                 }
                 .pointingHandCursor()
                 .help("Copy Path")
@@ -157,7 +156,7 @@ struct CacheRowView: View {
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(location.path, forType: .string)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.4) {
             haveCopied = false
         }
     }
